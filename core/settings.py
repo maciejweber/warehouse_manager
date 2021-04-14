@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'orders',
+    'frontend',
     'knox',
     'rest_framework',
     'phonenumber_field',
