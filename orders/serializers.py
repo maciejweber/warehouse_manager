@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Order, Comment, Documents
 from accounts.serializers import UserSerializer
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -20,11 +22,11 @@ class DocumentSerializer(serializers.ModelSerializer):
 
 
 class OrdersListSerializer(serializers.ModelSerializer):
-    author = UserSerializer()
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id', 'author', 'title', 'status',
+                  'scheduled_date', 'updated_at']
         read_only_fields = ['author']
 
 
@@ -36,3 +38,4 @@ class OrderDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+        read_only_fields = ['author']

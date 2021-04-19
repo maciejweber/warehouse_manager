@@ -29,9 +29,13 @@ class OrderList(generics.ListCreateAPIView):
 
 
 class OrderDetail(generics.RetrieveAPIView):
-    permission_classes = [IsOwnerOrAdmin]
-    queryset = Order.objects.all()
+    # permission_classes = [IsOwnerOrAdmin]
+    permission_classes = [permissions.AllowAny]
     serializer_class = OrderDetailSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = Order.objects.all()
+        return queryset
 
 
 class CommentList(generics.CreateAPIView):

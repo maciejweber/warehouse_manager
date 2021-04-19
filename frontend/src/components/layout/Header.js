@@ -1,7 +1,16 @@
 import React, { useState, useRef} from 'react'
 import { NavLink, useHistory } from 'react-router-dom';
+import {useDetectOutsideClick} from '../hooks/useDetectOutsideClick';
 
 const Header = () => {
+    const menu = useRef(null);
+    const [open, setOpen] = useDetectOutsideClick(menu, false)
+    const history = useHistory();
+
+    const goSettings = () => {
+      history.push('/settings')
+      setOpen(!open)
+    }
     return (
         <div>
           <nav className="bg-gray-800">
@@ -15,13 +24,13 @@ const Header = () => {
                     <div className="ml-10 flex items-baseline space-x-4">
 
                     <NavLink
-                      exact 
+                      exact
                       to="/" 
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Zlecenia</NavLink>
                     <NavLink 
-                      to="/orders" 
+                      to="/clients" 
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Klienci</NavLink>
@@ -43,6 +52,14 @@ const Header = () => {
                             </div>
                         </button>
                       </div>
+
+                      { open && (
+                      <div ref={menu} className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                        <a onClick={goSettings} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Ustawienia</a>
+        
+                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Wyloguj się</a>
+                      </div>
+                      )}
                     </div>
                   </div>
                 </div>

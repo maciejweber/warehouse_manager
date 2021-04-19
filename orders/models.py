@@ -12,7 +12,6 @@ STATUS = [
 class Order(models.Model):
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=80)
-    company = models.CharField(max_length=50)
     status = models.CharField(max_length=1, choices=STATUS, default='1')
     created_date = models.DateTimeField(auto_now_add=True)
     scheduled_date = models.DateField()
