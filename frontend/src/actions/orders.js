@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { FETCH_ORDERS_SUCCESS, FETCH_ORDERS_REQUEST, FETCH_ORDERS_FAILURE, FETCH_ORDER_DETAIL_FAILURE, FETCH_ORDER_DETAIL_REQUEST, FETCH_ORDER_DETAIL_SUCCESS } from './types';
+import { authHeader } from '../components/services/authHeader';
 
 export const fetchOrders = () => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({type:FETCH_ORDERS_REQUEST})
-        axios.get(`api/orders/`)
+        axios.get(`api/orders/`, authHeader(getState))
         .then((res) => {
             setTimeout(() => {
                 dispatch({
@@ -23,9 +24,9 @@ export const fetchOrders = () => {
 }
 
 export const fetchDetailOrder = (id) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({type:FETCH_ORDER_DETAIL_REQUEST})
-        axios.get(`api/orders/${id}/`)
+        axios.get(`api/orders/${id}/`, authHeader(getState))
         .then((res)=>{
                 dispatch({
                     type: FETCH_ORDER_DETAIL_SUCCESS,

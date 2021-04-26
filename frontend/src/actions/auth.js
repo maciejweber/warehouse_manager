@@ -11,10 +11,12 @@ import {
   REGISTER_FAIL,
 } from './types';
 
+import { authHeader } from '../components/services/authHeader';
+
 export const loadUser = () => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch({ type: USER_LOADING })
-        axios.get(`api/auth/user/`, tokenConfig(getState))
+        axios.get(`api/auth/user/`, authHeader(getState))
         .then((res) => {
             dispatch({
                 type: USER_LOADED,
@@ -58,20 +60,13 @@ export const login = (email, password) => {
     }
 }
 
-export const tokenConfig = () => {
-    return (dispatch) => {
-        const token = getState().auth.token;
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
-
-        if (token){
-            config.headers['Authorization'] = `Token ${token}`
-        }
-
-        return config;
+export const logout = () => {
+    return (dispatch, getState) => {
+        axios.post(`api/auth/logout/`, null, authHeader(getState))
+        .then((res)=>{
+            dispatch({
+                type: LOGOUT_SUCCESS
+            });
+        });
     }
 }

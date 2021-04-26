@@ -13,7 +13,7 @@ import {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null,
+    user: {},
   }
 
   export default function (state = initialState, action) {
@@ -28,10 +28,10 @@ import {
                   ...state,
                   isAuthenticated: true,
                   isLoading: false,
-                  user: user.payload
+                  user: action.payload
               }
             case LOGIN_SUCCESS:
-            localStorage.setItem('token',action.payload.token)
+            localStorage.setItem('token', action.payload.token)
             return { 
                 ...state,
                 ...action.payload,
@@ -39,18 +39,18 @@ import {
                 isLoading: false
             };
             case AUTH_ERROR:
-                case LOGIN_FAIL:
-                case LOGOUT_SUCCESS:
-                case REGISTER_FAIL:
-                  localStorage.removeItem('token');
-                  return {
-                    ...state,
-                    token: null,
-                    user: null,
-                    isAuthenticated: false,
-                    isLoading: false,
-                  };
-                default:
-                  return state;
+            case LOGIN_FAIL:
+            case LOGOUT_SUCCESS:
+            case REGISTER_FAIL:
+              localStorage.removeItem('token');
+              return {
+                ...state,
+                token: null,
+                user: {},
+                isAuthenticated: false,
+                isLoading: false,
+              };
+              default:
+                return state;
       }
   }

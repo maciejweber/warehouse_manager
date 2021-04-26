@@ -11,17 +11,13 @@ from rest_framework import exceptions
 
 
 class OrderList(generics.ListCreateAPIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = OrdersListSerializer
 
     def get_queryset(self, *args, **kwargs):
-
-        # !!! CHANGE IT
-
-        # queryset = Order.objects.filter(author=self.request.user)
-        # if self.request.user.is_staff:
-        #     queryset = Order.objects.all()
-        queryset = Order.objects.all()
+        queryset = Order.objects.filter(author=self.request.user)
+        if self.request.user.is_staff:
+            queryset = Order.objects.all()
         return queryset
 
     def perform_create(self, serializer):
@@ -29,8 +25,7 @@ class OrderList(generics.ListCreateAPIView):
 
 
 class OrderDetail(generics.RetrieveAPIView):
-    # permission_classes = [IsOwnerOrAdmin]
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsOwnerOrAdmin]
     serializer_class = OrderDetailSerializer
 
     def get_queryset(self, *args, **kwargs):

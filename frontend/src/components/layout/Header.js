@@ -1,16 +1,27 @@
 import React, { useState, useRef} from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
+
+import {logout} from '../../actions/auth';
 import {useDetectOutsideClick} from '../hooks/useDetectOutsideClick';
 
 const Header = () => {
     const menu = useRef(null);
     const [open, setOpen] = useDetectOutsideClick(menu, false)
+    const is_admin = useSelector(state => state.auth.user.is_superuser)
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const goSettings = () => {
       history.push('/settings')
       setOpen(!open)
-    }
+    };
+
+    const logOut = () => {
+      dispatch(logout());
+    };
+
+    
     return (
         <div>
           <nav className="bg-gray-800">
@@ -29,11 +40,18 @@ const Header = () => {
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Zlecenia</NavLink>
+                    <NavLink
+                      to="/orders/new" 
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >Nowe Zlecenie</NavLink>                    
+                    {is_admin &&
                     <NavLink 
                       to="/clients" 
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Klienci</NavLink>
+                    }
 
                     </div>
                   </div>
@@ -57,7 +75,7 @@ const Header = () => {
                       <div ref={menu} className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                         <a onClick={goSettings} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Ustawienia</a>
         
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Wyloguj się</a>
+                        <a onClick={logOut} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Wyloguj się</a>
                       </div>
                       )}
                     </div>

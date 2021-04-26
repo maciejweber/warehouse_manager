@@ -13,6 +13,7 @@ import OrdersPage from './pages/OrdersList';
 import { OrderDetail } from "./pages/OrderDetail";
 import Login from "./pages/Login";
 import {loadUser} from '../actions/auth';
+import AddOrder from "./pages/AddOrder";
 
 function App() {
     return (
@@ -22,8 +23,9 @@ function App() {
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* <Alert/> */}
           <Switch>
-            <PrivateRoute exact path='/' component={OrdersPage} />
             <Route path='/login' component={Login} />
+            <PrivateRoute exact path='/' component={OrdersPage} />
+            <PrivateRoute exact path='/orders/new' component={AddOrder} />
             <PrivateRoute path='/orders/:id' component={OrderDetail} />
           </Switch>
         </div>

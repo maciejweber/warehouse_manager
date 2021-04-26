@@ -7,34 +7,41 @@ from phonenumber_field.modelfields import PhoneNumberField
 class UserManager(BaseUserManager):
     def create_user(self, email, name, phone, password=None):
         if not email:
-            raise ValueError("Users must have an e-mail address")
-        user = self.model(
-            email=self.normalize_email(email),
-            name=name,
-            phone=phone
+            raise ValueError("Users must have an Emaill address")
+        if not name:
+            raise ValueError("Users must have an name")
+        if not phone:
+            raise ValueError("Users must have an phone number")
+        user  = self.model(
+                email=self.normalize_email(email),
+                password=password,
+                name=name,
+                phone=phone
         )
-        user.date_joined = timezone.now()
-        password = UserManager().make_random_password()
-        print('E-mail: ' + email)
-        print('Password: ' + password)
+        # password = UserManager().make_random_password()
+        
         user.set_password(password)
         user.save()
         return user
 
-    def create_staffuser(self, email, password):
+    def create_staffuser(self, email, name, phone, password):
         user = self.create_user(
             email=self.normalize_email(email),
-            password=password
+            password=password,
+            name=name,
+            phone=phone
         )
         user.is_staff = True
         user.is_superuser = False
         user.save()
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, name, phone, password):
         user = self.create_user(
             email=self.normalize_email(email),
-            password=password
+            password=password,
+            name=name,
+            phone=phone
         )
         user.is_staff = True
         user.is_superuser = True
@@ -44,8 +51,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email', max_length=60, unique=True)
-    name = models.CharField(max_length=60, null=True)
-    phone = PhoneNumberField(null=True, blank=True, unique=True)
+    name = models.CharField(max_length=60, blank=True, null=True)
+    phone = PhoneNumberField(unique=True, blank=True, null=True)
     date_joined = models.DateTimeField(
         verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
@@ -56,6 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['name', 'phone']
 
     objects = UserManager()
 
