@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_ORDERS_SUCCESS, FETCH_ORDERS_REQUEST, FETCH_ORDERS_FAILURE, FETCH_ORDER_DETAIL_FAILURE, FETCH_ORDER_DETAIL_REQUEST, FETCH_ORDER_DETAIL_SUCCESS } from './types';
+import { FETCH_ORDERS_SUCCESS, FETCH_ORDERS_REQUEST, FETCH_ORDERS_FAILURE, FETCH_ORDER_DETAIL_FAILURE, FETCH_ORDER_DETAIL_REQUEST, FETCH_ORDER_DETAIL_SUCCESS, NEW_ORDER, NEW_ORDER_FAILURE } from './types';
 import { authHeader } from '../components/services/authHeader';
 
 export const fetchOrders = () => {
@@ -39,5 +39,23 @@ export const fetchDetailOrder = (id) => {
                 payload: err.message
             })
         })
+    }
+}
+
+export const newOrder = (order) => {
+    return (dispatch, getState) => {
+        axios.post(`api/orders/`, order, authHeader(getState))
+        .then((res)=>{
+            dispatch({
+                type: NEW_ORDER,
+                payload: res.data
+            });
+        })
+        .catch((err)=>{
+            dispatch({
+                type: NEW_ORDER_FAILURE,
+                payload: err.message
+            });
+        });
     }
 }

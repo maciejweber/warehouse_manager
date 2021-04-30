@@ -6,21 +6,10 @@ from django.contrib.auth.password_validation import validate_password
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'name', 'phone', 'last_login', 'is_staff', 'is_superuser')
-
-
-class RegisterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'name', 'phone')
-
-    def create(self, validated_data):
-        user = User.objects.create_user(
-            validated_data['email'], validated_data['name'], validated_data['phone'])
-        return user
 
 
 class LoginSerializer(serializers.Serializer):

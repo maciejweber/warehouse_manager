@@ -3,9 +3,9 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from .serializers import (OrdersListSerializer, CommentSerializer,
                           OrderDetailSerializer, DocumentSerializer)
-from .models import Order, Comment
+from orders.models import Order, Comment, Documents
 from django.http import Http404
-from .permissions import IsOwnerOrAdmin
+from orders.permissions import IsOwnerOrAdmin
 from rest_framework import generics
 from rest_framework import exceptions
 

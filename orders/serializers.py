@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Order, Comment, Documents
-from accounts.serializers import UserSerializer
+from accounts.serializers.account import AccountSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -33,7 +33,7 @@ class OrdersListSerializer(serializers.ModelSerializer):
 class OrderDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(source='comment_set', many=True)
     documents = DocumentSerializer(source='documents_set', many=True)
-    author = UserSerializer()
+    author = AccountSerializer()
 
     class Meta:
         model = Order

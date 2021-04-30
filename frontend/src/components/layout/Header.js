@@ -9,6 +9,7 @@ const Header = () => {
     const menu = useRef(null);
     const [open, setOpen] = useDetectOutsideClick(menu, false)
     const is_admin = useSelector(state => state.auth.user.is_superuser)
+    const email = useSelector(state => state.auth.user.email)
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -73,6 +74,7 @@ const Header = () => {
 
                       { open && (
                       <div ref={menu} className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                        <a className="block px-4 py-2 text-sm text-gray-700 border-b border-gray-300" role="menuitem">{email}</a>
                         <a onClick={goSettings} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Ustawienia</a>
         
                         <a onClick={logOut} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Wyloguj się</a>

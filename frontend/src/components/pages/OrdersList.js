@@ -68,8 +68,6 @@ const OrdersPage = () => {
     );
   }, [orders, searchTerm, currentPage, completed, sorting])
 
-  console.log(ordersData)
-
   return (
     <div>
       <div className="flex items-center justify-between h-16">
