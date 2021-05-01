@@ -24,16 +24,22 @@ class OrderList(generics.ListCreateAPIView):
         serializer.save(author=self.request.user)
 
 
-class OrderDetail(generics.RetrieveAPIView):
+class OrderDetail(generics.RetrieveUpdateAPIView):
     permission_classes = [IsOwnerOrAdmin]
     serializer_class = OrderDetailSerializer
+    queryset = Order.objects.all()
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = Order.objects.all()
-        return queryset
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "mobile number updated successfully"})
 
+        else:
+            return Response({"message": "failed", "details": serializer.errors})
 
-class CommentList(generics.CreateAPIView):
+class Comments(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CommentSerializer
 
@@ -46,7 +52,7 @@ class CommentList(generics.CreateAPIView):
                 detail='You do not have permission')
 
 
-class DocumentList(generics.CreateAPIView):
+class Documents(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CommentSerializer
 

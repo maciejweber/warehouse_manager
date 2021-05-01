@@ -6,7 +6,6 @@ User = get_user_model()
 
 
 class CommentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Comment
         fields = '__all__'
@@ -14,7 +13,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class DocumentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Documents
         fields = '__all__'
@@ -30,6 +28,7 @@ class OrdersListSerializer(serializers.ModelSerializer):
         read_only_fields = ['author']
 
 
+
 class OrderDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(source='comment_set', many=True)
     documents = DocumentSerializer(source='documents_set', many=True)
@@ -39,3 +38,9 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
         read_only_fields = ['author']
+
+    def update(self, instance, validated_data):
+        print(validated_data.get('status', instance.status))
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+        return instance
