@@ -47,11 +47,18 @@ const Header = () => {
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Nowe Zlecenie</NavLink>                    
                     {is_admin &&
+                    <div>
                     <NavLink 
                       to="/clients" 
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Klienci</NavLink>
+                    <NavLink 
+                      to="/employees" 
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                      activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >Pracownicy</NavLink>
+                    </div>
                     }
 
                     </div>

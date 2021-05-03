@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from "react-router-dom";
 
-const OrdersList = ({ ordersList }) => {
+const TableList = ({ data }) => {
 
     let history = useHistory();
     const onClick = (id) => {
@@ -10,8 +10,8 @@ const OrdersList = ({ ordersList }) => {
 
     return (
       <tbody className="bg-white divide-y divide-gray-200">
-        {ordersList.map((order) => (
-        <tr className="bg-gray-50 hover:bg-gray-100" key={order.id} onClick={() => onClick(order.id)}>
+        {data.map((obj) => (
+        <tr className="bg-gray-50 hover:bg-gray-100" key={obj.id} onClick={() => onClick(obj.id)}>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="flex items-center">
             <div className="flex-shrink-0 h-10 w-10">
@@ -21,20 +21,20 @@ const OrdersList = ({ ordersList }) => {
                 </div>
               <div className="ml-4">
                 <div className="text-sm font-medium text-gray-900">
-                  {order.author}
+                  {obj.author}
                 </div>
               </div>
             </div>
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm text-gray-900">{order.title}</div>
+            <div className="text-sm text-gray-900">{obj.title}</div>
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm text-gray-900">
-            {order.status === '1' ?
+            {obj.status === '1' ?
               <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
               Oczekiwanie na dostawe
-              </span> : order.status === '2' ?
+              </span> : obj.status === '2' ?
               <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
               W magazynie
               </span> : 
@@ -45,10 +45,10 @@ const OrdersList = ({ ordersList }) => {
             </div>
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm text-gray-900">{order.scheduled_date}</div>
+            <div className="text-sm text-gray-900">{obj.scheduled_date}</div>
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm text-gray-900">{order.updated_at}</div>
+            <div className="text-sm text-gray-900">{obj.updated_at}</div>
           </td>
         </tr>
         ))}
@@ -56,4 +56,4 @@ const OrdersList = ({ ordersList }) => {
     )
 }
 
-export default OrdersList;
+export default TableList;

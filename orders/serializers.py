@@ -40,7 +40,6 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         read_only_fields = ['author']
 
     def update(self, instance, validated_data):
-        print(validated_data.get('status', instance.status))
         instance.status = validated_data.get('status', instance.status)
         instance.save()
         return instance

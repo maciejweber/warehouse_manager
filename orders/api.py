@@ -34,10 +34,9 @@ class OrderDetail(generics.RetrieveUpdateAPIView):
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "mobile number updated successfully"})
-
+            return Response(serializer.data)
         else:
-            return Response({"message": "failed", "details": serializer.errors})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class Comments(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]

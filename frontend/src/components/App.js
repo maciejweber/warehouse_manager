@@ -14,6 +14,8 @@ import { OrderDetail } from "./pages/OrderDetail";
 import Login from "./pages/Login";
 import {loadUser} from '../actions/auth';
 import AddOrder from "./pages/AddOrder";
+import Clients from "./pages/Clients";
+import Employees from "./pages/Employees";
 
 function App() {
     return (
@@ -27,6 +29,8 @@ function App() {
             <PrivateRoute exact path='/' component={OrdersPage} />
             <PrivateRoute exact path='/orders/new' component={AddOrder} />
             <PrivateRoute path='/orders/:id' component={OrderDetail} />
+            <PrivateRoute path='/clients/' component={Clients} />
+            <PrivateRoute path='/employees/' component={Employees} />
           </Switch>
         </div>
         </Router>

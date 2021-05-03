@@ -87,4 +87,4 @@ const initialState = {
     }
   }
   
-  export default orderListReducer
+  export default orderListReducer;

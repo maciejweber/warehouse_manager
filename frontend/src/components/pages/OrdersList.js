@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders } from '../../actions/orders';
 import { Link } from 'react-router-dom';
 
-import Pagination from '../orders/list/Pagination';
-import OrdersList from '../orders/list/OrdersList';
-import SearchList from '../orders/list/SearchList';
-import FilterList from '../orders/list/FilterList';
-import HeaderList from '../orders/list/HeaderList';
-import OrdersListLoader from '../orders/list/OrdersListLoader';
+import Pagination from '../table/Pagination';
+import TableList from '../orders/TableList';
+import SearchList from '../table/SearchList';
+import FilterList from '../orders/FilterList';
+import HeaderList from '../orders/HeaderList';
+import ListLoader from '../loaders/ListLoader';
 
 
 
@@ -97,9 +97,9 @@ const OrdersPage = () => {
                 }
                 />
                 {loading ? 
-                <OrdersListLoader/>
+                <ListLoader/>
                 :
-                <OrdersList ordersList={ordersData}/>
+                <TableList data={ordersData}/>
                 }
               </table>
             </div>

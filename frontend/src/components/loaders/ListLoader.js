@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OrdersListLoader = () => {
+const ListLoader = () => {
     return (
         <tbody className="bg-white animate-pulse divide-y divide-gray-200">
         <tr className="bg-gray-50">
@@ -26,4 +26,4 @@ const OrdersListLoader = () => {
     )
 }
 
-export default OrdersListLoader
+export default ListLoader;

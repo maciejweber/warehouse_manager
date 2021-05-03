@@ -11,12 +11,12 @@ urlpatterns = [
     path('api/auth/logout/', knox_views.LogoutView.as_view(), name='knox_logout'),
     path('api/auth/', include('knox.urls')),
 
-    path('api/clients/list/', ClientsList.as_view()),
+    path('api/clients/', ClientsList.as_view()),
     path('api/clients/create/', ClientCreate.as_view()),
     path('api/clients/<int:pk>/deactivate/', DeactivateClientAccount.as_view()),
     path('api/clients/<int:pk>/active/', ActiveClientAccount.as_view()),
 
-    path('api/employees/list/', EmployeesList.as_view()),
+    path('api/employees/', EmployeesList.as_view()),
     path('api/employees/create/', EmployeeCreate.as_view()),
     path('api/employees/<int:pk>/deactivate/', DeactivateEmployeeAccount.as_view()),
     path('api/employees/<int:pk>/active/', ActiveEmployeeAccount.as_view()),
