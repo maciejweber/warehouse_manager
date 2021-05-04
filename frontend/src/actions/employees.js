@@ -5,7 +5,7 @@ import { authHeader } from '../components/services/authHeader';
 export const fetchEmployees = () => {
     return (dispatch, getState) => {
         dispatch({type:FETCH_EMPLOYEES_REQUEST})
-        axios.get(`api/clients/`, authHeader(getState))
+        axios.get(`api/employees/`, authHeader(getState))
         .then((res) => {
             setTimeout(() => {
                 dispatch({

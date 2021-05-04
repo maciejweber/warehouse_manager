@@ -1,10 +1,7 @@
-import React, {useState, useEffect, useMemo} from 'react'
+import React, {useEffect} from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { fetchDetailOrder } from '../../actions/orders';
-import orderListreducer from '../../reducers/orders';
 
 export const OrderDetail = () => {
     const order = useSelector(state => state.orders.activeOrder.order)

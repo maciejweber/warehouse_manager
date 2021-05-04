@@ -21,7 +21,7 @@ import {
           case USER_LOADING:
               return {
                   ...state,
-                  isLoading: true
+                  isLoading: true,
               }
           case USER_LOADED:
               return { 

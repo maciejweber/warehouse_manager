@@ -4,14 +4,20 @@ import { useHistory } from "react-router-dom";
 const TableList = ({ data }) => {
 
     let history = useHistory();
-    const onClick = (id) => {
-      history.push('clients/'+id)
+
+    const onClick = (id, user) => {
+      history.push({
+        pathname: "/clients/"+id,
+        state: {
+          client: user
+        }
+      });
     }
 
     return (
       <tbody className="bg-white divide-y divide-gray-200">
         {data.map((obj) => (
-        <tr className="bg-gray-50 hover:bg-gray-100" key={obj.id} onClick={() => onClick(obj.id)}>
+        <tr className="bg-gray-50 hover:bg-gray-100" key={obj.id} onClick={() => onClick(obj.id, obj)}>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="flex items-center">
             <div className="flex-shrink-0 h-10 w-10">
