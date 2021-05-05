@@ -9,14 +9,15 @@ const ClientDetail = (props) => {
 
     const dispatch = useDispatch();
 
-    const aaaa = (id) => {
-      if(client.is_active){
-        dispatch(deactivateAccount(id))
+    const onClick = () => {
+      if(client.is_active === true){
+        dispatch(deactivateAccount(client.id))
+        history.push('/clients')
       } else {
-        dispatch(activateAccount(id))
+        dispatch(activateAccount(client.id))
+        history.push('/clients')        
       }
     }
-
 
     return (
         <div>
@@ -29,7 +30,12 @@ const ClientDetail = (props) => {
               <span className="mx-2">Wróć</span>
             </button>
           </div>
-          <button onClick={aaaa(client.id)} type="button" className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-base px-6 py-2 rounded-lg">Usuń</button>
+          <button onClick={onClick} type="button" className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-base px-6 py-2 rounded-lg">
+            {client.is_active ?
+            'Usuń' :
+            'Przywróć'  
+            }
+          </button>
 
         </div>
           <div className="border-b border-gray-200 sm:rounded-lg bg-gray-50 p-4 mb-4">
@@ -90,7 +96,7 @@ const ClientDetail = (props) => {
                         Aktywny
                         </span>
                         :
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                         Nie aktywny
                         </span>
                         }
