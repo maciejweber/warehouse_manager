@@ -1,14 +1,12 @@
 from rest_framework.views import APIView
-from rest_framework import permissions, status
+from rest_framework import permissions, status, generics, exceptions
 from rest_framework.response import Response
-from .serializers import (OrdersListSerializer, CommentSerializer,
-                          OrderDetailSerializer, DocumentSerializer)
-from orders.models import Order, Comment, Documents
 from django.http import Http404
-from orders.permissions import IsOwnerOrAdmin
-from rest_framework import generics
-from rest_framework import exceptions
 
+from orders.models import Order, Comment, Documents
+from orders.permissions import IsOwnerOrAdmin
+from .serializers import (OrdersListSerializer, CommentSerializer,
+                          DocumentSerializer)
 
 class OrderList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -18,7 +16,7 @@ class OrderList(generics.ListCreateAPIView):
         queryset = Order.objects.filter(author=self.request.user)
         if self.request.user.is_staff:
             queryset = Order.objects.all()
-        return queryset
+        return queryset.order_by('-updated_at')[:100]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -26,7 +24,7 @@ class OrderList(generics.ListCreateAPIView):
 
 class OrderDetail(generics.RetrieveUpdateAPIView):
     permission_classes = [IsOwnerOrAdmin]
-    serializer_class = OrderDetailSerializer
+    serializer_class = OrdersListSerializer
     queryset = Order.objects.all()
 
     def update(self, request, *args, **kwargs):

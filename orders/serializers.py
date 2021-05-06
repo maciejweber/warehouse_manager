@@ -20,19 +20,11 @@ class DocumentSerializer(serializers.ModelSerializer):
 
 
 class OrdersListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Order
-        fields = ['id', 'author', 'title', 'status',
-                  'scheduled_date', 'updated_at']
-        read_only_fields = ['author']
-
-
-
-class OrderDetailSerializer(serializers.ModelSerializer):
+    created_date = serializers.DateTimeField(format="%Y-%m-%d - %H:%M", read_only=True)
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d - %H:%M", read_only=True)
+    author = AccountSerializer(read_only=True)
     comments = CommentSerializer(source='comment_set', many=True)
     documents = DocumentSerializer(source='documents_set', many=True)
-    author = AccountSerializer()
 
     class Meta:
         model = Order
@@ -43,3 +35,6 @@ class OrderDetailSerializer(serializers.ModelSerializer):
         instance.status = validated_data.get('status', instance.status)
         instance.save()
         return instance
+
+
+

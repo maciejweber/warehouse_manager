@@ -7,6 +7,7 @@ User = get_user_model()
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    last_login = serializers.DateTimeField(format="%Y-%m-%d - %H:%M", read_only=True)
     class Meta:
         model = User
         fields = ('id', 'email', 'name', 'phone', 'last_login', 'is_staff', 'is_superuser')
@@ -31,7 +32,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     def validate(self, attrs):
         if attrs['new_password'] != attrs['new_password2']:
             raise serializers.ValidationError(
-                {"password": "Password fields didn't match."})
+                {"detail": "Password fields didn't match."})
         return attrs
 
     def validate_new_password(self, value):

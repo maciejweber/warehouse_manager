@@ -21,7 +21,7 @@ const TableList = ({ data }) => {
                 </div>
               <div className="ml-4">
                 <div className="text-sm font-medium text-gray-900">
-                  {obj.author}
+                  {obj.author.name}
                 </div>
               </div>
             </div>

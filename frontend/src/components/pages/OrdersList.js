@@ -13,8 +13,8 @@ import ListLoader from '../loaders/ListLoader';
 
 
 const OrdersPage = () => {
-  const loading = useSelector(state => state.orders.ordersList.loading)
-  const orders = useSelector(state => state.orders.ordersList.orders);
+  const loading = useSelector(state => state.orders.loading)
+  const orders = useSelector(state => state.orders.orders);
   const dispatch = useDispatch();
 
   const [searchTerm, setSearchTerm] = useState('');

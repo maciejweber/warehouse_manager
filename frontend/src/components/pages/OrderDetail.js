@@ -1,20 +1,17 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDetailOrder } from '../../actions/orders';
 
-export const OrderDetail = () => {
-    const order = useSelector(state => state.orders.activeOrder.order)
-    const comments = useSelector(state => state.orders.activeOrder.order.comments)
-    const documents = useSelector(state => state.orders.activeOrder.order.documents)
-    const loading = useSelector(state => state.orders.activeOrder.loading)
-    const dispatch = useDispatch();
-    const { id } = useParams();
-    const history = useHistory();
+export const OrderDetail = ({ match }) => {
+    const { postId } = match.params
 
-    useEffect(() => {
-        dispatch(fetchDetailOrder(id));
-    }, [])
+    const order = useSelector(state => state.orders.orders.find(obj => obj.id === postId))
+
+    console.log(order)
+
+    const history = useHistory();
+    const loading = useSelector(state => state.orders.loading)
     
     return (
         <div>
@@ -27,11 +24,16 @@ export const OrderDetail = () => {
               <span className="mx-2">Wróć</span>
             </button>
           </div>
+            <select className="bg-gray-100 border border-white p-2 rounded-lg text-gray-700 flex items-center">
+              <option value='1'>Oczekiewanie na dostawę</option>
+              <option value='2'>W magazynie</option>
+              <option value='3'>Wydano</option>
+            </select>
         </div>
         {loading ? 'loading':
           <div className="border-b border-gray-200 sm:rounded-lg bg-gray-50 p-4 mb-4">
               {/* Details order */}
-              <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Informacje</h1>
+              {/* <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Informacje</h1>
               <div className="grid grid-cols-3">
                 <div className="col-span-2 p-2">
                   <div className="px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -88,11 +90,11 @@ export const OrderDetail = () => {
                     </div>
                     
                 </div>
-              </div>
+              </div> */}
               {/* End detail orders */}
   
-              {/* Comments */}
-              <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Komentarze ({comments.length})</h1>
+              Comments
+              {/* <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Komentarze ({comments.length})</h1>
 
 
                 {comments.map((comment)=>
@@ -114,11 +116,12 @@ export const OrderDetail = () => {
                     </div>
                   </div>
                 </div>
-                )}
+                )} */}
+
                 {/* End Comments */}
   
               {/* Documents */}
-              <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Dokumenty ({documents.length})</h1>
+              {/* <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Dokumenty ({documents.length})</h1>
 
               {documents.map((document)=>
               <div className="flex items-center p-2">
@@ -136,7 +139,7 @@ export const OrderDetail = () => {
                   </div>
                 </div>
               </div>
-              )}
+              )} */}
 
               {/* End Documents */}
   

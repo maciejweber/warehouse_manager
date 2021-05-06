@@ -57,8 +57,6 @@ TEMPLATES = [
     },
 ]
 
-DATETIME_INPUT_FORMATS = '%Y-%m-%d %H:%M:%S'
-
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
@@ -95,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'pl'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Warsaw'
 
