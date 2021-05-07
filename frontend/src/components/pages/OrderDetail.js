@@ -2,17 +2,26 @@ import React, {useEffect, useState} from 'react'
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDetailOrder } from '../../actions/orders';
+import { changeStatus } from '../../actions/orders';
+
 
 export const OrderDetail = ({ match }) => {
-    const { postId } = match.params
-
-    const order = useSelector(state => state.orders.orders.find(obj => obj.id === postId))
-
-    console.log(order)
-
+    const { orderId } = match.params
     const history = useHistory();
-    const loading = useSelector(state => state.orders.loading)
+    const dispatch = useDispatch();
     
+    const order = useSelector(state => state.orders.orders.find((order) => order.id === Number(orderId)))
+    const is_staff = useSelector(state => state.auth.user.is_staff)
+    
+    const [status, setStatus] = useState(order.status)
+
+    const onChange = (e) => {
+      setStatus(e.target.value)
+      const order = JSON.stringify({status: e.target.value})
+      dispatch(changeStatus(orderId, order))
+    }
+  
+
     return (
         <div>
         <div className="flex items-center justify-between h-16">
@@ -24,16 +33,17 @@ export const OrderDetail = ({ match }) => {
               <span className="mx-2">Wróć</span>
             </button>
           </div>
-            <select className="bg-gray-100 border border-white p-2 rounded-lg text-gray-700 flex items-center">
+          {is_staff &&
+            <select value={status} onChange={onChange} className="bg-gray-100 border border-white p-2 rounded-lg text-gray-700 flex items-center">
               <option value='1'>Oczekiewanie na dostawę</option>
               <option value='2'>W magazynie</option>
               <option value='3'>Wydano</option>
             </select>
+          }
         </div>
-        {loading ? 'loading':
           <div className="border-b border-gray-200 sm:rounded-lg bg-gray-50 p-4 mb-4">
               {/* Details order */}
-              {/* <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Informacje</h1>
+              <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Informacje</h1>
               <div className="grid grid-cols-3">
                 <div className="col-span-2 p-2">
                   <div className="px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -61,6 +71,27 @@ export const OrderDetail = ({ match }) => {
                       {order.scheduled_date}
                     </dd>
                   </div>
+
+                  {!is_staff &&
+                  <div className="px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4">
+                    <dt className="text-sm font-medium text-gray-500">
+                      Status
+                    </dt>
+                    <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      {order.status === '1' ?
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                        Oczekiwanie na dostawe
+                        </span> : order.status === '2' ?
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        W magazynie
+                        </span> : 
+                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                        Wydano
+                        </span>                           
+                      }
+                    </dd>
+                  </div>
+                  }
                 </div>
   
                 <div className="border-l border-gray-200 p-2">
@@ -90,14 +121,14 @@ export const OrderDetail = ({ match }) => {
                     </div>
                     
                 </div>
-              </div> */}
+              </div>
               {/* End detail orders */}
   
               Comments
-              {/* <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Komentarze ({comments.length})</h1>
+              <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Komentarze ({order.comments.length})</h1>
 
 
-                {comments.map((comment)=>
+                {order.comments.map((comment)=>
                 <div className="flex items-center p-2" key={comment.id}>
                   <span className="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
                     <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
@@ -116,14 +147,14 @@ export const OrderDetail = ({ match }) => {
                     </div>
                   </div>
                 </div>
-                )} */}
+                )}
 
                 {/* End Comments */}
   
               {/* Documents */}
-              {/* <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Dokumenty ({documents.length})</h1>
+              <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">Dokumenty ({order.documents.length})</h1>
 
-              {documents.map((document)=>
+              {order.documents.map((document)=>
               <div className="flex items-center p-2">
                 <span className="inline-block h-6 w-6 rounded-full overflow-hidden bg-gray-100">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6 text-gray-400">
@@ -139,12 +170,12 @@ export const OrderDetail = ({ match }) => {
                   </div>
                 </div>
               </div>
-              )} */}
+              )}
 
               {/* End Documents */}
   
           </div>
-    }
+    
       </div>
     )
 }

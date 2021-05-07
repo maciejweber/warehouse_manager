@@ -23,8 +23,8 @@ class OrdersListSerializer(serializers.ModelSerializer):
     created_date = serializers.DateTimeField(format="%Y-%m-%d - %H:%M", read_only=True)
     updated_at = serializers.DateTimeField(format="%Y-%m-%d - %H:%M", read_only=True)
     author = AccountSerializer(read_only=True)
-    comments = CommentSerializer(source='comment_set', many=True)
-    documents = DocumentSerializer(source='documents_set', many=True)
+    comments = CommentSerializer(source='comment_set', many=True, read_only=True)
+    documents = DocumentSerializer(source='documents_set', many=True, read_only=True)
 
     class Meta:
         model = Order

@@ -9,6 +9,7 @@ const Header = () => {
     const menu = useRef(null);
     const [open, setOpen] = useDetectOutsideClick(menu, false)
     const is_admin = useSelector(state => state.auth.user.is_superuser)
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
     const email = useSelector(state => state.auth.user.email)
     const history = useHistory();
     const dispatch = useDispatch();
@@ -22,9 +23,9 @@ const Header = () => {
       dispatch(logout());
     };
 
-    
     return (
-        <div>
+      <div>
+          {isAuthenticated &&
           <nav className="bg-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex items-center justify-between h-16">
@@ -93,6 +94,7 @@ const Header = () => {
               </div>
             </div>
           </nav>
+          }
         </div>
         
     )

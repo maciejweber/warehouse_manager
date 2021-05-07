@@ -23,7 +23,7 @@ class OrderList(generics.ListCreateAPIView):
 
 
 class OrderDetail(generics.RetrieveUpdateAPIView):
-    permission_classes = [IsOwnerOrAdmin]
+    permission_classes = [permissions.IsAdminUser]
     serializer_class = OrdersListSerializer
     queryset = Order.objects.all()
 

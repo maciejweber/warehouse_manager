@@ -41,12 +41,17 @@ const OrdersPage = () => {
   const ordersData = useMemo(() => {
     let computedOrders = orders;
 
-    computedOrders = computedOrders.filter(obj => obj.status !== '3');
+    if(completed === false){
+      computedOrders = computedOrders.filter(obj => obj.status !== '3');
+    } else {
+      computedOrders = computedOrders.filter(obj => obj.status === '3');
+    }
 
     if (searchTerm){
       computedOrders = computedOrders.filter((row) =>
         row.title.toLowerCase().indexOf(searchTerm) > -1 ||
-        row.title.toLowerCase().indexOf(searchTerm) > -1
+        row.author.name.toLowerCase().indexOf(searchTerm) > -1 ||
+        row.author.email.toLowerCase().indexOf(searchTerm) > -1
 
         
       );
@@ -83,7 +88,7 @@ const OrdersPage = () => {
                   setCurrentPage(1);
                 }}/>
           </div>
-          <Link to='/orders/add' type="button" className="bg-gray-100 text-gray-700 text-base px-6 py-2 rounded-lg">Dodaj zlecenie</Link>
+          <Link to='/orders/new' type="button" className="bg-gray-100 text-gray-700 text-base px-6 py-2 rounded-lg">Dodaj zlecenie</Link>
       </div>
       <div className="flex flex-col ">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

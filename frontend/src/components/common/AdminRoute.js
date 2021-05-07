@@ -11,13 +11,15 @@ const AdminRoute = ({ component: Component, ...rest }) => {
 
     useEffect(()=>{
         dispatch(loadUser());
-    }, [isAuthenticated])
+    }, [])
     return (
         <Route
             {...rest}
             render={(props)=>{
                 if(auth.isLoading){
                     return <h1>Loading...</h1>;
+                } else if (!isAuthenticated){
+                    return <Redirect to="/login" />;
                 } else if (!is_admin){
                     return <Redirect to="/" />;
                 } else {

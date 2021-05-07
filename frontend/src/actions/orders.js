@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_ORDERS_SUCCESS, FETCH_ORDERS_REQUEST, FETCH_ORDERS_FAILURE, FETCH_ORDER_DETAIL_FAILURE, FETCH_ORDER_DETAIL_REQUEST, FETCH_ORDER_DETAIL_SUCCESS, NEW_ORDER, NEW_ORDER_FAILURE } from './types';
+import { FETCH_ORDERS_SUCCESS, FETCH_ORDERS_REQUEST, FETCH_ORDERS_FAILURE, FETCH_ORDER_DETAIL_FAILURE, FETCH_ORDER_DETAIL_REQUEST, FETCH_ORDER_DETAIL_SUCCESS, NEW_ORDER, NEW_ORDER_FAILURE, CHANGE_STATUS_SUCCESS, CHANGE_STATUS_FAILTURE } from './types';
 import { authHeader } from '../components/services/authHeader';
 
 export const fetchOrders = () => {
@@ -17,7 +17,7 @@ export const fetchOrders = () => {
         .catch((err) => {
             dispatch({
                 type: FETCH_ORDERS_FAILURE,
-                payload: err.message
+                payload: err.response.data
             })
         })
     }
@@ -36,7 +36,7 @@ export const fetchDetailOrder = (id) => {
         .catch((err)=>{
             dispatch({
                 type: FETCH_ORDER_DETAIL_FAILURE,
-                payload: err.message
+                payload: err.response.data
             })
         })
     }
@@ -54,7 +54,26 @@ export const newOrder = (order) => {
         .catch((err)=>{
             dispatch({
                 type: NEW_ORDER_FAILURE,
-                payload: err.message
+                payload: err.response.data
+            });
+            console.log(err.response)
+        });
+    }
+}
+
+export const changeStatus = (id, status) => {
+    return(dispatch, getState) => {
+        axios.patch(`api/orders/${id}/`, status, authHeader(getState))
+        .then((res)=>{
+            dispatch({
+                type: CHANGE_STATUS_SUCCESS,
+                payload: res.data
+            });
+        })
+        .catch((err)=>{
+            dispatch({
+                type: CHANGE_STATUS_SUCCESS,
+                payload: err.response.data
             });
         });
     }
