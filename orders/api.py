@@ -8,6 +8,7 @@ from orders.permissions import IsOwnerOrAdmin
 from .serializers import (OrdersListSerializer, CommentSerializer,
                           DocumentSerializer)
 
+
 class OrderList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = OrdersListSerializer
@@ -29,12 +30,14 @@ class OrderDetail(generics.RetrieveUpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class Comments(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]

@@ -43,7 +43,7 @@ const Header = () => {
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Zlecenia</NavLink>
                     <NavLink
-                      to="/orders/new" 
+                      to="/new" 
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Nowe Zlecenie</NavLink>                    

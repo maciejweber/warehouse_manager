@@ -88,7 +88,7 @@ const OrdersPage = () => {
                   setCurrentPage(1);
                 }}/>
           </div>
-          <Link to='/orders/new' type="button" className="bg-gray-100 text-gray-700 text-base px-6 py-2 rounded-lg">Dodaj zlecenie</Link>
+          <Link to='/new' type="button" className="bg-gray-100 text-gray-700 text-base px-6 py-2 rounded-lg">Dodaj zlecenie</Link>
       </div>
       <div className="flex flex-col ">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

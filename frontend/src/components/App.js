@@ -28,7 +28,7 @@ function App() {
             <Route path='/login' component={Login} />
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <PrivateRoute exact path='/' component={OrdersPage} />
-              <PrivateRoute exact path='/orders/new' component={AddOrder} />
+              <PrivateRoute path='/new' component={AddOrder} />
               <PrivateRoute path='/orders/:orderId' component={OrderDetail} />
               <PrivateRoute path='/settings/' component={Settings} />
               <AdminRoute path='/clients/:id' component={ClientDetail} />
