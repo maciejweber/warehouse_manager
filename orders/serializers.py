@@ -6,6 +6,13 @@ User = get_user_model()
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    created_date = serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M", read_only=True)
+    author = serializers.SerializerMethodField("get_email")
+
+    def get_email(self, obj):
+        return obj.author.email
+
     class Meta:
         model = Comment
         fields = '__all__'
@@ -13,6 +20,13 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class DocumentSerializer(serializers.ModelSerializer):
+    created_date = serializers.DateTimeField(
+        format="%Y-%m-%d %H:%M", read_only=True)
+    author = serializers.SerializerMethodField("get_email")
+
+    def get_email(self, obj):
+        return obj.author.email
+
     class Meta:
         model = Documents
         fields = '__all__'
@@ -21,9 +35,9 @@ class DocumentSerializer(serializers.ModelSerializer):
 
 class OrdersListSerializer(serializers.ModelSerializer):
     created_date = serializers.DateTimeField(
-        format="%Y-%m-%d - %H:%M", read_only=True)
+        format="%Y-%m-%d %H:%M", read_only=True)
     updated_at = serializers.DateTimeField(
-        format="%Y-%m-%d - %H:%M", read_only=True)
+        format="%Y-%m-%d %H:%M", read_only=True)
     author = AccountSerializer(read_only=True)
     comments = CommentSerializer(
         source='comment_set', many=True, read_only=True)

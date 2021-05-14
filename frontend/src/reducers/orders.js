@@ -27,18 +27,15 @@ const orderListReducer = (state = initialState, action) => {
     case NEW_ORDER_FAILURE:
       return { ...state, orders: [...state.orders], error: action.payload };
 
-    // case ADD_COMMENT_SUCCESS:
-    //   return state.orders.map((order) => {
-    //     if (order.id === action.order) {
-    //       console.log(order);
-    //       return {
-    //         ...order,
-    //         comments: [...order.comments, action.payload],
-    //       };
-    //     } else {
-    //       return order;
-    //     }
-    //   });
+    case ADD_COMMENT_SUCCESS:
+      return {
+        ...state,
+        orders: state.orders.map((order) =>
+          order.id === action.payload.order
+            ? { ...order, comments: [action.payload, ...order.comments] }
+            : order
+        ),
+      };
 
     default:
       return state;

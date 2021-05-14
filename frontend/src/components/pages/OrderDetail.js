@@ -146,8 +146,8 @@ export const OrderDetail = ({ match }) => {
         <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">
           Komentarze ({order.comments.length})
         </h1>
-        {order.comments.map((comment) => (
-          <div className="flex items-center p-2" key={comment.id}>
+        {order.comments.map((comment, i) => (
+          <div className="flex items-center p-2" key={i}>
             <span className="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
               <svg
                 className="h-full w-full text-gray-300"
@@ -174,6 +174,7 @@ export const OrderDetail = ({ match }) => {
               className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
               type="text"
               placeholder="Komentarz"
+              value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
             <button
@@ -189,8 +190,8 @@ export const OrderDetail = ({ match }) => {
         <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">
           Dokumenty ({order.documents.length})
         </h1>
-        {order.documents.map((document) => (
-          <div className="flex items-center p-2">
+        {order.documents.map((document, i) => (
+          <div className="flex items-center p-2" key={i}>
             <span className="inline-block h-6 w-6 rounded-full overflow-hidden bg-gray-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -16,7 +16,6 @@ export const addComment = (comment) => {
           type: ADD_COMMENT_SUCCESS,
           payload: res.data,
         });
-        console.log(res.data);
       })
       .catch((err) => {
         dispatch({
