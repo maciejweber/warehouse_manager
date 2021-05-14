@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment } from "../../actions/comments";
 import { changeStatus } from "../../actions/orders";
+import CommentsList from "../orders/CommentsList";
+import DocumentsList from "../orders/DocumentsList";
 
 export const OrderDetail = ({ match }) => {
   const { orderId } = match.params;
@@ -23,7 +25,8 @@ export const OrderDetail = ({ match }) => {
     dispatch(changeStatus(orderId, order));
   };
 
-  const newComment = () => {
+  const newComment = (e) => {
+    e.preventDefault();
     const data = JSON.stringify({ content: comment, order: order.id });
     dispatch(addComment(data));
     setComment("");
@@ -146,28 +149,8 @@ export const OrderDetail = ({ match }) => {
         <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">
           Komentarze ({order.comments.length})
         </h1>
-        {order.comments.map((comment, i) => (
-          <div className="flex items-center p-2" key={i}>
-            <span className="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
-              <svg
-                className="h-full w-full text-gray-300"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            </span>
-            <div className="ml-4">
-              <div className="text-sm font-medium text-gray-900">
-                {comment.author}
-              </div>
-              <div className="text-sm text-gray-500">{comment.content}</div>
-              <div className="text-sm text-gray-500 font-normal">
-                {comment.created_date}
-              </div>
-            </div>
-          </div>
-        ))}
+        <CommentsList comments={order.comments} />
+
         <form className="w-full max-w-sm" onSubmit={newComment}>
           <div className="flex items-center border-b border-teal-500 py-2">
             <input
@@ -185,37 +168,13 @@ export const OrderDetail = ({ match }) => {
             </button>
           </div>
         </form>
+
         {/* End Comments */}
         {/* Documents */}
         <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">
           Dokumenty ({order.documents.length})
         </h1>
-        {order.documents.map((document, i) => (
-          <div className="flex items-center p-2" key={i}>
-            <span className="inline-block h-6 w-6 rounded-full overflow-hidden bg-gray-100">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                className="h-6 w-6 text-gray-400"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                />
-              </svg>
-            </span>
-            <div className="ml-4">
-              <div className="text-sm font-medium text-gray-900">
-                {document.author}
-              </div>
-              <div className="text-sm text-gray-500">{document.document}</div>
-            </div>
-          </div>
-        ))}
+        <DocumentsList documents={order.documents} />
         {/* End Documents */}
       </div>
     </div>

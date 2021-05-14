@@ -31,8 +31,8 @@ function App() {
             <PrivateRoute path="/new" component={AddOrder} />
             <PrivateRoute path="/orders/:orderId" component={OrderDetail} />
             <PrivateRoute path="/settings/" component={Settings} />
+            <AdminRoute exact path="/clients/" component={Clients} />
             <AdminRoute path="/clients/:id" component={ClientDetail} />
-            <AdminRoute path="/clients/" component={Clients} />
             <AdminRoute path="/employees/" component={Employees} />
           </div>
         </Switch>

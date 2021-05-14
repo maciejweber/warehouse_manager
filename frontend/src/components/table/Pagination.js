@@ -32,21 +32,20 @@ const Pagination = ({ total, itemsPerPage, currentPage, onPageChange }) => {
       <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing
+            Pozycja od
             <span className="font-medium">
               {" "}
               {currentPage * itemsPerPage - (itemsPerPage - 1)}{" "}
             </span>
-            to
+            do
             <span className="font-medium">
               {" "}
               {total < currentPage * itemsPerPage
                 ? total
                 : currentPage * itemsPerPage}{" "}
             </span>
-            of
-            <span className="font-medium"> {total} </span>
-            results
+            z<span className="font-medium"> {total} </span>
+            łącznie
           </p>
         </div>
         <div>

@@ -3,6 +3,8 @@ import {
   ADD_COMMENT_FAILTUE,
   ADD_COMMENT_REQUEST,
   ADD_COMMENT_SUCCESS,
+  DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_FAILTURE,
 } from "./types";
 import { authHeader } from "../components/services/authHeader";
 
@@ -23,6 +25,25 @@ export const addComment = (comment) => {
           payload: err.response.data,
         });
         console.log(err.response);
+      });
+  };
+};
+
+export const deleteComment = (id) => {
+  return (dispatch, getState) => {
+    axios
+      .delete(`api/comments/${id}/`, authHeader(getState))
+      .then((res) => {
+        dispatch({
+          type: DELETE_COMMENT_SUCCESS,
+          payload: id,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: DELETE_COMMENT_FAILTURE,
+          payload: err.response.data,
+        });
       });
   };
 };

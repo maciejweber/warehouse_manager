@@ -5,6 +5,7 @@ import {
   NEW_ORDER,
   NEW_ORDER_FAILURE,
   ADD_COMMENT_SUCCESS,
+  DELETE_COMMENT_SUCCESS,
 } from "../actions/types";
 
 const initialState = {
@@ -33,6 +34,21 @@ const orderListReducer = (state = initialState, action) => {
         orders: state.orders.map((order) =>
           order.id === action.payload.order
             ? { ...order, comments: [action.payload, ...order.comments] }
+            : order
+        ),
+      };
+
+    case DELETE_COMMENT_SUCCESS:
+      return {
+        ...state,
+        orders: state.orders.map((order) =>
+          order.comments
+            ? {
+                ...order,
+                comments: order.comments.filter(
+                  (comment) => comment.id !== action.payload
+                ),
+              }
             : order
         ),
       };
