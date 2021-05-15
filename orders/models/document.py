@@ -9,7 +9,8 @@ class Document(models.Model):
         User, related_name='documents', on_delete=models.DO_NOTHING)
     document = models.FileField(upload_to='doc')
     created_date = models.DateTimeField(auto_now_add=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='documents')
 
     def __str__(self):
         return str(self.order) + ' - ' + str(self.author)

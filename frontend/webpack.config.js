@@ -6,22 +6,21 @@ module.exports = {
         test: /\.js$|jsx/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.(scss|css)$/,
         include: /node_modules/,
         use: [
-            {
-                loader: "style-loader"
-            },
-            {
-                loader: "css-loader",
-    
-            },
-        ]
-    },
-    ]
-  }
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+          },
+        ],
+      },
+    ],
+  },
 };

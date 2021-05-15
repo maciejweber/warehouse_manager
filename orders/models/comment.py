@@ -10,7 +10,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=128)
     created_date = models.DateTimeField(auto_now_add=True)
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name='order')
+        Order, on_delete=models.CASCADE, related_name='comments')
 
     def __str__(self):
         return str(self.order) + ' - ' + str(self.author)

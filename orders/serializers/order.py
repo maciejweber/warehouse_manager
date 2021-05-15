@@ -2,6 +2,7 @@ from rest_framework import serializers
 from datetime import date
 
 from orders.models.order import Order
+from orders.models.comment import Comment
 from accounts.serializers.account import AccountSerializer
 from orders.serializers.comment import CommentSerializer
 from orders.serializers.document import DocumentSerializer
@@ -15,15 +16,21 @@ class OrdersListSerializer(serializers.ModelSerializer):
     updated_at = serializers.DateTimeField(
         format="%Y-%m-%d %H:%M", read_only=True)
     author = AccountSerializer(read_only=True)
-    comments = CommentSerializer(
-        source='comment_set', many=True, read_only=True)
-    documents = DocumentSerializer(
-        source='document_set', many=True, read_only=True)
+    documents = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
         fields = '__all__'
         read_only_fields = ['author']
+
+    def get_comments(self, order):
+        qs = order.comments.all().order_by('-created_date')
+        return CommentSerializer(qs, many=True, read_only=True).data
+
+    def get_documents(self, order):
+        qs = order.documents.all().order_by('-created_date')
+        return DocumentSerializer(qs, many=True, read_only=True).data
 
     def update(self, instance, validated_data):
         instance.status = validated_data.get('status', instance.status)
