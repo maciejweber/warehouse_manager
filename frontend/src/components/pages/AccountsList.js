@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchEmployees } from "../../actions/employees";
-import { Link } from "react-router-dom";
+import { fetchAccounts } from "../../actions/accounts";
+import { NavLink } from "react-router-dom";
 
-import TableList from "../employees/TableList";
-import FilterList from "../employees/FilterList";
-import HeaderList from "../employees/HeaderList";
+import TableList from "../accounts/TableList";
+import FilterList from "../accounts/FilterList";
+import HeaderList from "../accounts/HeaderList";
 import Pagination from "../table/Pagination";
 import SearchList from "../table/SearchList";
 import ListLoader from "../loaders/ListLoader";
 
-const Clients = () => {
-  const loading = useSelector((state) => state.employees.loading);
-  const employees = useSelector((state) => state.employees.employeesList);
+const AccountsList = () => {
+  const loading = useSelector((state) => state.accounts.loading);
+  const accounts = useSelector((state) => state.accounts.accountsList);
   const dispatch = useDispatch();
+
+  const [filterList, setFilterList] = useState("clients");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [deleted, setDeleted] = useState(false);
@@ -24,18 +26,28 @@ const Clients = () => {
   const ITEMS_PER_PAGE = 10;
 
   useEffect(() => {
-    dispatch(fetchEmployees());
+    dispatch(fetchAccounts());
   }, []);
 
-  const employeesData = useMemo(() => {
-    let computedEmployees = employees;
+  const accountsData = useMemo(() => {
+    let computedAccounts = accounts;
 
-    computedEmployees = computedEmployees.filter(
+    if (filterList === "clients") {
+      computedAccounts = computedAccounts.filter(
+        (obj) => obj.is_staff === false
+      );
+    } else if (filterList === "employees") {
+      computedAccounts = computedAccounts.filter(
+        (obj) => obj.is_staff === true
+      );
+    }
+
+    computedAccounts = computedAccounts.filter(
       (obj) => obj.is_active !== deleted
     );
 
     if (searchTerm) {
-      computedEmployees = computedEmployees.filter(
+      computedAccounts = computedAccounts.filter(
         (row) =>
           row.email.toLowerCase().indexOf(searchTerm) > -1 ||
           row.name.toLowerCase().indexOf(searchTerm) > -1 ||
@@ -43,14 +55,13 @@ const Clients = () => {
       );
     }
 
-    setTotalItems(computedEmployees.length);
+    setTotalItems(computedAccounts.length);
 
-    return computedEmployees.slice(
+    return computedAccounts.slice(
       (currentPage - 1) * ITEMS_PER_PAGE,
       (currentPage - 1) * ITEMS_PER_PAGE + ITEMS_PER_PAGE
     );
-  }, [employees, searchTerm, currentPage, deleted]);
-
+  }, [filterList, accounts, searchTerm, currentPage, deleted]);
   return (
     <div>
       <div className="flex items-center justify-between h-16">
@@ -67,14 +78,22 @@ const Clients = () => {
               setCurrentPage(1);
             }}
           />
+          <select
+            className="bg-gray-100 border border-white p-2 rounded-lg text-gray-700 flex items-center"
+            value={filterList}
+            onChange={(e) => setFilterList(e.target.value)}
+          >
+            <option value="clients">Klienci</option>
+            <option value="employees">Pracownicy</option>
+          </select>
         </div>
-        <Link
-          to="/orders/add"
+        <NavLink
+          to="/add"
           type="button"
           className="bg-gray-100 text-gray-700 text-base px-6 py-2 rounded-lg"
         >
-          Nowy pracownik
-        </Link>
+          Nowy klient
+        </NavLink>
       </div>
       <div className="flex flex-col ">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -82,7 +101,7 @@ const Clients = () => {
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <HeaderList />
-                {loading ? <ListLoader /> : <TableList data={employeesData} />}
+                {loading ? <ListLoader /> : <TableList data={accountsData} />}
               </table>
             </div>
           </div>
@@ -98,4 +117,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default AccountsList;

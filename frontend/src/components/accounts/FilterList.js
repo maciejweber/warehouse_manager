@@ -17,7 +17,7 @@ const FilterList = ({ onDeleted }) => {
           defaultChecked={deleted}
           onChange={onChange}
         />
-        <span className="ml-2">Pokaż usuniętych klientów</span>
+        <span className="ml-2">Pokaż usuniętych</span>
       </label>
     </div>
   );

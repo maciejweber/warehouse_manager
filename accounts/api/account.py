@@ -1,12 +1,15 @@
+from django.http.response import Http404
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from knox.models import AuthToken
 from rest_framework import status
-from accounts.serializers.account import AccountSerializer, LoginSerializer, ChangePasswordSerializer
+from accounts.serializers.account import (
+    AccountSerializer, LoginSerializer, ChangePasswordSerializer)
 from django.contrib.auth import get_user_model
 from ..premissions import IsSuperUser
 
 User = get_user_model()
+
 
 class LoginAPI(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -55,49 +58,37 @@ class ChangePasswordView(generics.UpdateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DeactivateAccount(generics.UpdateAPIView):
+class AccountsList(generics.ListCreateAPIView):
     """
-    Deactivate account
+    Display all accounts and create account
     """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = AccountSerializer
     permission_classes = [IsSuperUser]
 
-    def get_object(self, pk):
-        try:
-            return User.objects.get(id=pk)
-        except User.DoesNotExist:
-            raise Http404
-
-    def patch(self, request, pk):
-        obj = self.get_object(pk)
-        if obj.is_active == False:
-            return Response(
-                {"detail":"Account is already inactive"},
-                status=status.HTTP_405_METHOD_NOT_ALLOWED,
-            )
-        obj.is_active = False
-        obj.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            "user": AccountSerializer(user, context=self.get_serializer_context()).data
+        })
 
 
-class ActiveAccount(generics.UpdateAPIView):
+class AccountDetail(generics.RetrieveAPIView):
     """
-    Active account
+    Account detail
     """
+    serializer_class = AccountSerializer
     permission_classes = [IsSuperUser]
+    queryset = User.objects.all()
 
-    def get_object(self, pk):
-        try:
-            return User.objects.get(id=pk)
-        except User.DoesNotExist:
-            raise Http404
-
-    def patch(self, request, pk):
-        obj = self.get_object(pk)
-        if obj.is_active == True:
-            return Response(
-                {"detail":"Account is already active"},
-                status=status.HTTP_405_METHOD_NOT_ALLOWED,
-            )
-        obj.is_active = True
-        obj.save()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def patch(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

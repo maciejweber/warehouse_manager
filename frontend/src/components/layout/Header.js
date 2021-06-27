@@ -48,6 +48,7 @@ const Header = () => {
                       Zlecenia
                     </NavLink>
                     <NavLink
+                      exact
                       to="/new"
                       className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                       activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -57,18 +58,18 @@ const Header = () => {
                     {is_admin && (
                       <div>
                         <NavLink
-                          to="/clients"
+                          to="/accounts"
                           className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                           activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                         >
-                          Klienci
+                          Konta użytkowników
                         </NavLink>
                         <NavLink
-                          to="/employees"
+                          to="/add"
                           className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                           activeClassName="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                         >
-                          Pracownicy
+                          Dodaj użytkownika
                         </NavLink>
                       </div>
                     )}

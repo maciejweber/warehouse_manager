@@ -7,10 +7,34 @@ User = get_user_model()
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    last_login = serializers.DateTimeField(format="%Y-%m-%d - %H:%M", read_only=True)
+    last_login = serializers.DateTimeField(
+        format="%Y-%m-%d - %H:%M", read_only=True)
+
     class Meta:
         model = User
-        fields = ('id', 'email', 'name', 'phone', 'last_login', 'is_staff', 'is_superuser')
+        fields = ['id', 'email', 'name', 'phone',
+                  'date_joined', 'last_login', 'is_active', 'is_staff']
+        extra_kwargs = {
+            'name': {'required': True},
+            'phone': {'required': True},
+            'is_staff': {'required': True}
+        }
+
+    def create(self, validated_data):
+        print(validated_data)
+        if validated_data['is_staff'] == True:
+            user = User.objects.create_superuser(
+                validated_data['email'], validated_data['name'], validated_data['phone'])
+        else:
+            user = User.objects.create_user(
+                validated_data['email'], validated_data['name'], validated_data['phone'])
+        return user
+
+    def update(self, instance, validated_data):
+        instance.is_active = validated_data.get(
+            'is_active', instance.is_active)
+        instance.save()
+        return instance
 
 
 class LoginSerializer(serializers.Serializer):

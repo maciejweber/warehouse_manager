@@ -22,7 +22,7 @@ class OrdersListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
-        read_only_fields = ['author']
+        read_only_fields = ['author', 'documents', 'comments']
 
     def get_comments(self, order):
         qs = order.comments.all().order_by('-created_date')
@@ -37,11 +37,11 @@ class OrdersListSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def validate(self, attrs):
-        scheduled_date = attrs.get("scheduled_date")
+    def create(self, validated_data):
+        scheduled_date = validated_data.get("scheduled_date")
 
         if scheduled_date < date.today():
             raise serializers.ValidationError(
                 {"scheduled_date": "Date cannot be earlier than today"})
 
-        return attrs
+        return Order.objects.create(**validated_data)

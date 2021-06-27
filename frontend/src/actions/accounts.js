@@ -1,42 +1,75 @@
 import axios from "axios";
 import {
-  ACTIVATE_ACCOUNT_SUCCESS,
-  ACTIVATE_ACCOUNT_FAILURE,
-  DEACTIVATE_ACCOUNT_FAILURE,
-  DEACTIVATE_ACCOUNT_SUCCESS,
+  FETCH_ACCOUNTS_FAILURE,
+  FETCH_ACCOUNTS_REQUEST,
+  FETCH_ACCOUNTS_SUCCESS,
+  UPDATE_ACCOUNT_SUCCESS,
+  UPDATE_ACCOUNT_FAILTURE,
+  ADD_ACCOUNT_SUCCESS,
+  ADD_ACCOUNT_FAILTURE,
 } from "./types";
 import { authHeader } from "../components/services/authHeader";
 
-export const activateAccount = (id) => {
+export const fetchAccounts = () => {
   return (dispatch, getState) => {
+    dispatch({ type: FETCH_ACCOUNTS_REQUEST });
     axios
-      .patch(`api/accounts/${id}/activate/`, {}, authHeader(getState))
+      .get(`api/accounts/`, authHeader(getState))
       .then((res) => {
-        dispatch({
-          type: ACTIVATE_ACCOUNT_SUCCESS,
-        });
+        setTimeout(() => {
+          dispatch({
+            type: FETCH_ACCOUNTS_SUCCESS,
+            payload: res.data,
+          });
+        }, 500);
       })
       .catch((err) => {
         dispatch({
-          type: ACTIVATE_ACCOUNT_FAILURE,
+          type: FETCH_ACCOUNTS_FAILURE,
+          payload: err.message,
         });
       });
   };
 };
 
-export const deactivateAccount = (id) => {
+export const updateAccount = (id, data) => {
   return (dispatch, getState) => {
     axios
-      .patch(`api/accounts/${id}/deactivate/`, {}, authHeader(getState))
+      .patch(`api/accounts/${id}/`, data, authHeader(getState))
       .then((res) => {
         dispatch({
-          type: DEACTIVATE_ACCOUNT_SUCCESS,
+          type: UPDATE_ACCOUNT_SUCCESS,
+          payload: res.data,
         });
       })
       .catch((err) => {
         dispatch({
-          type: DEACTIVATE_ACCOUNT_FAILURE,
+          type: UPDATE_ACCOUNT_FAILTURE,
+          payload: err.response.data,
         });
+      });
+  };
+};
+
+export const addAccount = (data) => {
+  const account = JSON.stringify(data);
+  console.log(account);
+  return (dispatch, getState) => {
+    axios
+      .post(`api/accounts/`, account, authHeader(getState))
+      .then((res) => {
+        dispatch({
+          type: ADD_ACCOUNT_SUCCESS,
+          payload: res.data,
+        });
+        console.log(res);
+      })
+      .catch((err) => {
+        dispatch({
+          type: ADD_ACCOUNT_FAILTURE,
+          payload: err.response.data,
+        });
+        console.log(err);
       });
   };
 };

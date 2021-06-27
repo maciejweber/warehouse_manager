@@ -12,7 +12,8 @@ const AddOrder = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const onSubmit = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
     if (title && startDate) {
       const scheduled_date = moment(startDate).format("YYYY-MM-DD");
       const order = { title, scheduled_date };
@@ -65,7 +66,7 @@ const AddOrder = () => {
           />
         </div>
         <button
-          onClick={onSubmit}
+          onClick={(e) => onSubmit(e)}
           type="button"
           className="bg-gray-300 hover:bg-gray-400 text-gray-700 text-base px-6 py-2 m-2 rounded-lg"
         >

@@ -6,6 +6,7 @@ from accounts.serializers.client import ClientSerializer
 from ..premissions import IsSuperUser
 User = get_user_model()
 
+
 class ClientsList(generics.ListAPIView):
     """
     Display all clients
@@ -14,13 +15,6 @@ class ClientsList(generics.ListAPIView):
     serializer_class = ClientSerializer
     permission_classes = [IsSuperUser]
 
-class ClientDetail(generics.RetrieveAPIView):
-    """
-    Client detail
-    """
-    serializer_class = ClientSerializer
-    permission_classes = [IsSuperUser]
-    queryset = User.clients.all()
 
 class ClientCreate(generics.CreateAPIView):
     """

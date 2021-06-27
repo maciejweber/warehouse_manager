@@ -3,8 +3,9 @@ import { useHistory } from "react-router-dom";
 
 const TableList = ({ data }) => {
   let history = useHistory();
+
   const onClick = (id) => {
-    history.push("clients/" + id);
+    history.push("accounts/" + id);
   };
 
   return (

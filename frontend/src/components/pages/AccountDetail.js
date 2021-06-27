@@ -1,21 +1,26 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { activateAccount, deactivateAccount } from "../../actions/accounts";
+import { useDispatch, useSelector } from "react-redux";
+import { updateAccount } from "../../actions/accounts";
 
-const ClientDetail = (props) => {
+const AccountDetail = ({ match }) => {
+  const { accountId } = match.params;
   const history = useHistory();
-  const client = props.location.state.client;
-
   const dispatch = useDispatch();
 
+  const account = useSelector((state) =>
+    state.accounts.accountsList.find(
+      (account) => account.id === Number(accountId)
+    )
+  );
+
   const onClick = () => {
-    if (client.is_active === true) {
-      dispatch(deactivateAccount(client.id));
-      history.push("/clients");
+    if (account.is_active === true) {
+      const client = JSON.stringify({ is_active: false });
+      dispatch(updateAccount(account.id, client));
     } else {
-      dispatch(activateAccount(client.id));
-      history.push("/clients");
+      const client = JSON.stringify({ is_active: true });
+      dispatch(updateAccount(account.id, client));
     }
   };
 
@@ -45,7 +50,7 @@ const ClientDetail = (props) => {
           type="button"
           className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-base px-6 py-2 rounded-lg"
         >
-          {client.is_active ? "Usuń" : "Przywróć"}
+          {account.is_active ? "Usuń" : "Przywróć"}
         </button>
       </div>
       <div className="border-b border-gray-200 sm:rounded-lg bg-gray-50 p-4 mb-4">
@@ -57,20 +62,20 @@ const ClientDetail = (props) => {
             <div className="px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-gray-500">E-mail</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {client.email}
+                {account.email}
               </dd>
             </div>
 
             <div className="p-2 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-gray-500">Nazwa</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {client.name}
+                {account.name}
               </dd>
             </div>
             <div className="px-2 py-3 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-gray-500">Telefon</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {client.phone}
+                {account.phone}
               </dd>
             </div>
           </div>
@@ -81,7 +86,7 @@ const ClientDetail = (props) => {
                 Data dołączenia
               </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {client.date_joined}
+                {account.date_joined}
               </dd>
             </div>
             <div className="px-2 py-3">
@@ -89,13 +94,13 @@ const ClientDetail = (props) => {
                 Data ostatniego logowania
               </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {client.last_login}
+                {account.last_login}
               </dd>
             </div>
             <div className="px-2 py-3">
               <dt className="mb-1 text-sm font-medium text-gray-500">Status</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {client.is_active ? (
+                {account.is_active ? (
                   <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                     Aktywny
                   </span>
@@ -113,4 +118,4 @@ const ClientDetail = (props) => {
   );
 };
 
-export default ClientDetail;
+export default AccountDetail;
