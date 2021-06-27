@@ -13,7 +13,7 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'name', 'phone',
-                  'date_joined', 'last_login', 'is_active', 'is_staff']
+                  'date_joined', 'last_login', 'is_active', 'is_staff', 'is_superuser']
         extra_kwargs = {
             'name': {'required': True},
             'phone': {'required': True},
@@ -21,7 +21,6 @@ class AccountSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        print(validated_data)
         if validated_data['is_staff'] == True:
             user = User.objects.create_superuser(
                 validated_data['email'], validated_data['name'], validated_data['phone'])
