@@ -7,7 +7,7 @@
 - Change status order (admin only)
 - All customer orders (client)
 - All orders (admin only)
-- Add comments and documents (owner of the order & admin)
+- Add comments (owner of the order & admin)
 
 ## Technologies
 - Python3/Django
