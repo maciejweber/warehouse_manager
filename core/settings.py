@@ -1,11 +1,20 @@
+import environ
 import os
 from pathlib import Path
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'y_%jno$(8q*_o&o1ij2u$_&4osz(02s424(r@3s++ny+q%7lys'
 
-DEBUG = True
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-ALLOWED_HOSTS = []
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
+
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [

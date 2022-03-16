@@ -8,7 +8,6 @@ const AddAccount = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [employee, setEmployee] = useState(false);
-  const [success, setSuccess] = useState(false);
   const accountCreated = useSelector((state) => state.messages.accountCreated);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -18,7 +17,6 @@ const AddAccount = () => {
     if (email && name && phone) {
       const account = { email, name, phone, is_staff: employee };
       dispatch(addAccount(account));
-
     }
   };
 
@@ -45,12 +43,17 @@ const AddAccount = () => {
         </div>
       </div>
       <div className="border-b border-gray-200 sm:rounded-lg bg-gray-50 p-4">
-        {accountCreated ? 
-        <div class="px-4 py-3 leading-normal text-green-700 bg-green-100 rounded-lg" role="alert">
-          <p class="font-bold">Sukces</p>
-          <p>{accountCreated}</p>
-        </div>:''
-        }
+        {accountCreated ? (
+          <div
+            class="px-4 py-3 leading-normal text-green-700 bg-green-100 rounded-lg"
+            role="alert"
+          >
+            <p class="font-bold">Sukces</p>
+            <p>{accountCreated}</p>
+          </div>
+        ) : (
+          ""
+        )}
         <h1 className="m-2 font-bold text-gray-600 border-b border-gray-200 p-2">
           Nowy użykownik
         </h1>

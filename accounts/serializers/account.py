@@ -22,9 +22,11 @@ class AccountSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if validated_data['is_staff'] == True:
-            user = User.objects.create_superuser(
+            print('is staff')
+            user = User.objects.create_employee(
                 validated_data['email'], validated_data['name'], validated_data['phone'])
         else:
+            print('normal')
             user = User.objects.create_user(
                 validated_data['email'], validated_data['name'], validated_data['phone'])
         return user

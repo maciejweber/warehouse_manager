@@ -7,7 +7,8 @@ User = get_user_model()
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id','email','name','phone','date_joined','last_login','is_active']
+        fields = ['id', 'email', 'name', 'phone',
+                  'date_joined', 'last_login', 'is_active']
 
 
 class CreateEmployeeSerializer(serializers.ModelSerializer):
@@ -20,6 +21,6 @@ class CreateEmployeeSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        user = User.objects.create_staffuser(
+        user = User.objects.create_employee(
             validated_data['email'], validated_data['name'], validated_data['phone'])
         return user
